@@ -22,20 +22,8 @@ let html;
 getSimpleISO = () => {
     return (new Date()).toISOString().split('T')[0];
 }
-prettyHtmlTable = (title, cols, rows) => {
-    console.log('ROWS: ', rows[0]);
-    console.log('COLS: ', cols[0]);
-    const htmlCols = cols.map(c => c.visible ? `<th><b>${c.name}</b></th>` : `<th style="display:none"><b>${c.name}</b></th>`)
-                         .join('')
-    const htmlRows = rows.map(row => `<tr onclick="window.location='${row.gp_url}'">${row.map(r => r.visible ? `<td>${r.field}</td>` : `<td style="display:none">${r.field}</td>`).join('')}</tr>`)
-                         .join('')
-    return `<h4>${title}</h4>
-            <table id="sources">
-                <tr>${htmlCols}</tr>
-                ${htmlRows}
-            </table>`
-}
-newPrettyHtmlTable = (title, data) => {
+
+PrettyHtmlTable = (title, data) => {
     console.log('DATA: ', data[0]);
     const cols = [
         'Name',
@@ -76,11 +64,7 @@ newPrettyHtmlTable = (title, data) => {
             </table>`
 }
 async function sendEmail(){
-    const users = [{
-        firstName:'Chip',
-        lastName:'Snyder',
-        email:'thisunforfun@gmail.com'
-    }]
+    
     let sourceList = []; // array of array (rows) to write out
     sourceList.push([
         'NGDA_ID',
@@ -166,8 +150,8 @@ async function emailReport(addresses, HTML, csvString) {
       });
       
       var mailOptions = {
-        from: 'thisunforfun@gmail.com',
-        to: 'tylerdean.w@gmail.com',//'tyler.mccracken@critigen.com',
+        from: process.env.FROM_EMAIL,
+        to: process.env.TO_EMAIL,//'tyler.mccracken@critigen.com',
         subject: `GeoPlatform data report : ${getSimpleISO()}`,
         html: HTML, 
         attachments: [
@@ -269,7 +253,7 @@ makeHTML = () => {
             new Date(s.gp_date.split("-")) < new Date(s.agc_date.split("-"))
         );
         
-    html += newPrettyHtmlTable(
+    html += PrettyHtmlTable(
             'Filtered Sources (Newer date than GP):',
             filteredSources)
         html += `<div class="mui--divider-top">`
