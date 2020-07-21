@@ -1,0 +1,29 @@
+{
+  "name": "source_data_report",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/www",
+    "watch": "nodemon --ignore public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material/icon-button": "^7.0.0",
+    "aws-sdk": "^2.715.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "ndjson": "^1.5.0",
+    "node-cron": "^2.0.3",
+    "nodemailer": "^6.4.10"
+  },
+  "devDependencies": {
+    "connect-livereload": "^0.6.1",
+    "livereload": "^0.9.1",
+    "nodemon": "^2.0.4"
+  }
+}
