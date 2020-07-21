@@ -33,30 +33,20 @@ PrettyHtmlTable = (title, data) => {
     ];
     const rows = data.map(s => ([
         {name: 'ngda_name',value: s.ngda_name, visible: true},
-        {name: 'gp_url', value: s.gp_url, visible: false},
         {name: 'gp_date', value: s.gp_date, visible: true},
         {name: 'dg_date', value: s.dg_date, visible: true},
         {name: 'agc_date', value: s.agc_date, visible: true}
     ]));
     const htmlCols = cols.map(c => `<th><b>${c}</b></th>`)
                          .join('')
-    const row = rows[0].filter(r=>r.name === 'gp_url')[0].value;
-    console.log('ROW: ', row);
     const htmlRows = rows.map(function(row) { 
-                console.log('ROW: ', row);
-
                 const gpDate = row.find(r => r.name==='gp_date').value;
-                console.log('gpDate: ' + gpDate);
-                console.log("row.find(r => r.name==='gp_date'): ", row.find(r => r.name==='gp_date'));
-                return `<tr ">${row.map(r => r.visible ? 
-                    new Date(r.value) > new Date(gpDate) ? 
+                return `<tr ">${row.map(r => new Date(r.value) > new Date(gpDate) ? 
                         `<td class="attention">${r.value}</td>` : 
-                        `<td class="no-attention">${r.value}</td>` : 
-                    `<td style="display:none">${r.value}</td>`).join('')}</tr>`
+                        `<td class="no-attention">${r.value}</td>`).join('')}</tr>`
             }
         )
-                         .join('')
-    //return `<h4>testing</h4>`                     
+        .join('')                    
     return `<h4>${title}</h4>
             <table id="sources">
                 <tr>${htmlCols}</tr>
@@ -115,7 +105,6 @@ function rowsToCSVString(rows){
             .join('\n')
 }
 async function emailReport(addresses, HTML, csvString) {
-    console.log('csvString: ',csvString);
     // const subject = `accounts.geoplatform.gov Monthly Report : ${getSimpleISO()}`
     // const FOOTER = `<hr>
     // Geoplatform Tech Team`
@@ -148,7 +137,6 @@ async function emailReport(addresses, HTML, csvString) {
           pass: process.env.FROM_PASSWORD
         }
       });
-      
       var mailOptions = {
         from: process.env.FROM_EMAIL,
         to: process.env.TO_EMAIL,//'tyler.mccracken@critigen.com',
